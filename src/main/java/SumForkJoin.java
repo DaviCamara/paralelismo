@@ -5,33 +5,33 @@ class SumForkJoin extends RecursiveTask<Long> {
     int low;
     int high;
     long[] array;
+
     SumForkJoin(long[] arr, int lo, int hi) {
         array = arr;
         low = lo;
         high = hi;
     }
+
     protected Long compute() {
-        if(high - low <= 1) {
-            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+ array[high]);
+        if (high - low <= 1) {
+            System.out.println("Elementos: " + array[high]);
             return array[high];
-        }
-        else {
+        } else {
             int mid = low + (high - low) / 2;
             SumForkJoin left = new SumForkJoin(array, low, mid);
-
             SumForkJoin right = new SumForkJoin(array, mid, high);
-            Long aux = array[0];
             left.fork();
             right.fork();
-
-            array[0] = left.join() + right.join() + aux;
-            System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb" + left.join() + right.join());
-            return left.join() + right.join();
+            long aux = array[0];
+            array[0] = left.join() +right.join()+ aux;
+            System.out.println("Somas: " +left.join()+" + "+right.join()+"="+ (left.join()+ right.join()));
+            return left.join() +right.join();
         }
     }
 
     public static void main(String[] args) {
         long[] myArr = new long[6];
+        // n somou o primeiro indice(??))
         myArr[0] = 3;
 
         myArr[1] = 12;
@@ -45,7 +45,6 @@ class SumForkJoin extends RecursiveTask<Long> {
         myArr[5] = 20;
         ForkJoinPool pool = new ForkJoinPool();
         long SumForkJ = pool.invoke(new SumForkJoin(myArr, 0, 5));
-        System.out.println("ccccccccccccccccccccccccccc" +myArr[0]);
+        System.out.println("Resultado: " + myArr[0]);
     }
-
 }
